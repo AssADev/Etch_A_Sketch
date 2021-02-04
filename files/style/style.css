@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+  font-family: "Space Mono", sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(45deg, #171933, #1b1e3d);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 100vh;
+}
+
+h1,
+h2 {
+  font-family: "Orbitron", sans-serif;
+}
+
+a,
+button {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  background: #1b1e3d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2e5e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a63ff;
+}
+
+::-moz-selection {
+  background: #5a63ff;
+  color: #e0e6ff;
+}
+
+::selection {
+  background: #5a63ff;
+  color: #e0e6ff;
+}
+
+header {
+  text-align: center;
+  width: 100%;
+}
+
+header h1 {
+  text-align: center;
+  color: #e0e6ff;
+  font-size: 64px;
+  text-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
+  line-height: 1;
+}
+
+header p {
+  text-align: center;
+  color: #6495ff;
+  font-size: 20px;
+  margin-top: 14px;
+}
+
+header aside {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 15;
+  background: #22244d;
+  padding: 10px 15px;
+  border-bottom-left-radius: 3px;
+  border-left: 1px solid #2a2e5e;
+  border-bottom: 1px solid #2a2e5e;
+  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+          box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+header aside h3 {
+  font-size: 20px;
+  color: #e0e6ff;
+}
+
+header aside h3 a {
+  font-weight: 700;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: bg_rotate 3s linear infinite;
+          animation: bg_rotate 3s linear infinite;
+  background: -webkit-gradient(linear, left top, right top, from(#b40fd7), color-stop(50%, #7d0fd7), to(#b40fd7));
+  background: linear-gradient(90deg, #b40fd7 0%, #7d0fd7 50%, #b40fd7 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+}
+
+@-webkit-keyframes bg_rotate {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes bg_rotate {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+/*# sourceMappingURL=style.css.map */

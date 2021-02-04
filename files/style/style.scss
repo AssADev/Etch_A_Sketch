@@ -20,13 +20,59 @@ $shadow: rgba(0, 0, 0, 0.4);
     padding: 0;
     box-sizing: border-box;
     outline: none;
+    font-family: "Space Mono", sans-serif;
     scroll-behavior: smooth;
 }
 
 body {
-    background: #171933;
+    background: linear-gradient(45deg, $deep-space, $space);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+h1,
+h2 {
+    font-family: "Orbitron", sans-serif;
+}
+
+a,
+button {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+// Scrollbar & Selection :
+::-webkit-scrollbar {
+    background: $space;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $border;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $purple;
+}
+
+::selection {
+    background: $purple;
+    color: $light-color;
 }
 
 // Import SCSS :
 @import "scss_files/_mixin.scss";
+@import "scss_files/_header.scss";
 @import "scss_files/_article.scss";
+
+// Keyframes :
+@keyframes bg_rotate {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}

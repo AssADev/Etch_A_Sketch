@@ -1,0 +1,44 @@
+header {
+    text-align: center;
+    width: 100%;
+
+    h1 {
+        text-align: center;
+        color: $light-color;
+        font-size: 64px;
+        text-shadow: 0 5px 5px $shadow;
+        line-height: 1;
+    }
+    p {
+        text-align: center;
+        color: $constrast;
+        font-size: 20px;
+        margin-top: 14px;
+    }
+    aside {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 15;
+        background: $card-bg;
+        padding: 10px 15px;
+        border-bottom-left-radius: 3px;
+        border-left: 1px solid $border;
+        border-bottom: 1px solid $border;
+        box-shadow: 2px 2px 5px $shadow;
+
+        h3 {
+            font-size: 20px;
+            color: $light-color;
+
+            a {
+                font-weight: 700;
+                -webkit-text-fill-color: transparent;
+                animation: bg_rotate 3s linear infinite;
+                background: linear-gradient(90deg, rgba(180, 15, 215, 1) 0%, rgba(125, 15, 215, 1) 50%, rgba(180, 15, 215, 1) 100%);
+                background-size: 200% 100%;
+                -webkit-background-clip: text;
+            }
+        }
+    }
+}
