@@ -10,7 +10,7 @@ $border: #2a2e5e;
 $purple: #5a63ff;
 $royal-blue: #282b5c;
 
-$constrast: #6495ff;
+$contrast: #6495ff;
 $light-color: #e0e6ff;
 $shadow: rgba(0, 0, 0, 0.4);
 
@@ -42,6 +42,13 @@ a,
 button {
     text-decoration: none;
     cursor: pointer;
+}
+
+#particles-js {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
 }
 
 // Scrollbar & Selection :

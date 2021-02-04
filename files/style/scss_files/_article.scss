@@ -1,0 +1,128 @@
+article {
+    @include flexMid;
+
+    .controls {
+        position: relative;
+        z-index: 10;
+        background: $card-bg;
+        border: 1px solid $border;
+        border-radius: 5px;
+        margin: 0 25px;
+        padding: 25px;
+        width: 285px;
+        box-shadow: 3px 3px 5px $shadow;
+
+        h2 {
+            position: absolute;
+            transform: translateY(-115%);
+            background: $light-color;
+            padding: 5px 10px;
+            border-radius: 3px;
+            box-shadow: 3px 3px 5px $shadow;
+        }
+        .all_input {
+            @include flexColumn;
+
+            .input {
+                display: flex;
+                align-items: center;
+                width: 100%;
+
+                label {
+                    color: $light-color;
+                    font-size: 20px;
+                    margin-right: 15px;
+                }
+                input[type="color"] {
+                    -webkit-appearance: none;
+                    border: 2px solid $contrast;
+                    border-radius: 3px;
+                    height: 26px;
+                    width: calc(100% - 101px);
+
+                    &::-webkit-color-swatch-wrapper {
+                        padding: 0;
+                    }
+                    &::-webkit-color-swatch {
+                        border: none;
+                    }
+                }
+            }
+            .input_range {
+                margin-bottom: 25px;
+                width: 235px;
+
+                .slider_range {
+                    position: relative;
+                    width: 100%;
+
+                    input[type="range"] {
+                        position: relative;
+                        -webkit-appearance: none;
+                        appearance: none;
+                        width: 100%;
+                        height: 2px;
+                        background: $deep-space;
+                        border-radius: 2px;
+
+                        &::-webkit-slider-thumb {
+                            -webkit-appearance: none;
+                            appearance: none;
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                            background: $contrast;
+                            cursor: pointer;
+                        }
+                    }
+                    .progress_bar {
+                        width: 50%;
+                        height: 2px;
+                        background: $contrast;
+                        border-radius: 2px;
+                        position: absolute;
+                        top: 16px;
+                    }
+                }
+                p {
+                    color: $light-color;
+                    font-size: 20px;
+                    margin-top: 5px;
+                }
+            }
+            button {
+                width: 100%;
+                color: $contrast;
+                background: transparent;
+                font-size: 20px;
+                font-weight: 600;
+                border: 2px solid $contrast;
+                border-radius: 5px;
+                padding: 5px 15px;
+                margin: 5px 0;
+                transition: 0.3s;
+
+                &:hover,
+                &.active {
+                    color: $light-color;
+                    background: $contrast;
+                    box-shadow: 3px 3px 5px $shadow;
+                }
+                &#color_pick,
+                &#shading {
+                    margin-bottom: 25px;
+                }
+                &#clear {
+                    border: 2px solid #ff2525;
+                    color: #ff2525;
+
+                    &:hover {
+                        color: $light-color;
+                        background: #ff2525;
+                        border: 2px solid #ff2525;
+                    }
+                }
+            }
+        }
+    }
+}

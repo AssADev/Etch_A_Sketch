@@ -16,11 +16,40 @@
         <header>
             <h1>Etch a Sketch</h1>
             <p>The Pixel Art in all its splendour</p>
-            <aside>
-                <h3>Made by <a href="https://github.com/AssADev" target="_blank">AssA</a></h3>
-            </aside>
         </header>
-        <article></article>
+        <aside>
+            <h3>Made by <a href="https://github.com/AssADev" target="_blank">AssA</a></h3>
+        </aside>
+        <div id="particles-js"></div>
+        <article>
+            <div class="controls">
+                <h2>Controls</h2>
+                <div class="all_input">
+                    <div class="input">
+                        <label for="color">Color :</label>
+                        <input type="color" id="color" value="#6495ff" />
+                    </div>
+                    <button id="color_pick">Color picker</button>
+                    <div class="toggle_options">
+                        <button id="eraser">Toggle Eraser</button>
+                        <button id="rainbow">Toggle Rainbow</button>
+                        <button id="lighten">Toggle Lighten</button>
+                        <button id="shading">Toggle Shading</button>
+                    </div>
+                    <div class="input_range">
+                        <div class="slider_range">
+                            <input type="range" min="1" max="50" />
+                            <div class="progress_bar"></div>
+                        </div>
+                        <p>Grid size : <span id="grid_size">25 X 25</span></p>
+                    </div>
+                    <button id="clear">Clear</button>
+                </div>
+            </div>
+            <div class="etch_grid_container"></div>
+        </article>
         <script type="text/javascript" src="js/app.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script type="text/javascript" src="js/particles.js"></script>
     </body>
 </html>
