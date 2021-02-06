@@ -51,26 +51,36 @@ function generateGrid(value) {
 }
 
 // Buttons :
+let normal_pen = true;
+let eraser = false;
+let rainbow = false;
+let lighten = false;
+let shading = false;
+
 optionsBtn.forEach((optionBtn) =>
-    optionBtn.addEventListener("click", function () {
+    optionBtn.addEventListener("click", () => {
         if (document.querySelector(".toggle_options button.active") !== null) {
             document.querySelector(".toggle_options button.active").classList.remove("active");
         }
+
         optionBtn.classList.add("active");
 
         // Tcheck what is the button active :
         switch (optionBtn.id) {
+            case "normal_pen":
+                [normal_pen, eraser, rainbow, lighten, shading] = [true, false, false, false, false];
+                break;
             case "eraser":
-                console.log("Eraser");
+                [normal_pen, eraser, rainbow, lighten, shading] = [false, true, false, false, false];
                 break;
             case "rainbow":
-                console.log("rainbow");
+                [normal_pen, eraser, rainbow, lighten, shading] = [false, false, true, false, false];
                 break;
             case "lighten":
-                console.log("lighten");
+                [normal_pen, eraser, rainbow, lighten, shading] = [false, false, false, true, false];
                 break;
             case "shading":
-                console.log("shading");
+                [normal_pen, eraser, rainbow, lighten, shading] = [false, false, false, false, true];
                 break;
         }
     })
@@ -86,7 +96,7 @@ colorPicker.addEventListener("click", () => {
 
     gridContainer.addEventListener("click", (e) => {
         if (colorPicker.classList.contains("active")) {
-            inkValue = colorModification(e.target.style.backgroundColor);
+            inkValue = RGBToHEX(e.target.style.backgroundColor);
             inputColor.value = inkValue;
             colorPicker.classList.remove("active");
         }
@@ -94,7 +104,7 @@ colorPicker.addEventListener("click", () => {
 });
 
 // Color Modification RGB to HEX :
-function colorModification(rgb) {
+function RGBToHEX(rgb) {
     // Choose correct separator
     let sep = rgb.indexOf(",") > -1 ? "," : " ";
     // Turn "rgb(r,g,b)" into [r,g,b]
@@ -115,6 +125,42 @@ function colorModification(rgb) {
     return "#" + r + g + b;
 }
 
+function HEXToHSL(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    r = parseInt(result[1], 16);
+    g = parseInt(result[2], 16);
+    b = parseInt(result[3], 16);
+    (r /= 255), (g /= 255), (b /= 255);
+    var max = Math.max(r, g, b),
+        min = Math.min(r, g, b);
+    var h,
+        s,
+        l = (max + min) / 2;
+    if (max == min) {
+        h = s = 0; // achromatic
+    } else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+        }
+        h /= 6;
+    }
+    var HSL = new Object();
+    HSL["h"] = h;
+    HSL["s"] = s;
+    HSL["l"] = l;
+    return HSL;
+}
+
 // Grid Button :
 toggleGrid.addEventListener("click", () => {
     toggleGrid.classList.toggle("active");
@@ -122,9 +168,7 @@ toggleGrid.addEventListener("click", () => {
 });
 
 // Clear Button :
-clearBtn.addEventListener("click", () => {
-    gridElementSelection.forEach((gridElement) => (gridElement.style.background = ""));
-});
+clearBtn.addEventListener("click", () => gridElementSelection.forEach((gridElement) => (gridElement.style.background = "#FFF")));
 
 // Drawing event :
 let movement = false;
@@ -133,15 +177,43 @@ gridContainer.addEventListener("mousedown", (e) => {
     movement = true;
 
     if (!colorPicker.classList.contains("active")) {
-        e.target.style.backgroundColor = inkValue;
+        e.target.style.backgroundColor = drawing(inkValue);
 
         // For continus mousedown :
-        gridContainer.addEventListener("mousemove", (e) => {
+        gridContainer.addEventListener("mouseover", (e) => {
             if (movement) {
-                e.target.style.backgroundColor = inkValue;
+                e.target.style.backgroundColor = drawing(inkValue);
             }
         });
     }
 });
 
 gridContainer.addEventListener("mouseup", () => (movement = false));
+
+// Drawing function :
+function drawing(inkValue) {
+    if (eraser) {
+        inkValue = "#FFF";
+    } else if (rainbow) {
+        inkValue = randomColor();
+    } else if (lighten) {
+        inkValue = lightenColor(this.target);
+    } else if (shading) {
+        inkValue = randomColor();
+    }
+    return inkValue;
+}
+
+// Options buttons :
+// Random color (Rainbow) :
+function randomColor() {
+    return `hsl(${Math.random() * 360}, 100%, 50%)`;
+}
+
+// Lighten color (Lighten) :
+function lightenColor(inkValue) {
+    console.log(inkValue);
+    let newInk = HEXToHSL(inkValue);
+    console.log(newInk);
+    return newInk;
+}
