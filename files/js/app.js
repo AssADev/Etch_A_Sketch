@@ -1,4 +1,4 @@
-// Variables :
+// letiables :
 const optionsBtn = document.querySelectorAll(".toggle_options button");
 const inputColor = document.getElementById("color");
 const colorPicker = document.getElementById("color_pick");
@@ -18,6 +18,7 @@ inputColor.value = inkValue;
 // Call begin functions :
 generateGrid(inputRange.value);
 updateInformations(inputRange.value);
+switchOptionBtn("normal_pen");
 
 // Slider :
 inputRange.addEventListener("mousemove", () => updateInformations(inputRange.value));
@@ -51,12 +52,6 @@ function generateGrid(value) {
 }
 
 // Buttons :
-let normal_pen = true;
-let eraser = false;
-let rainbow = false;
-let lighten = false;
-let shading = false;
-
 optionsBtn.forEach((optionBtn) =>
     optionBtn.addEventListener("click", () => {
         if (document.querySelector(".toggle_options button.active") !== null) {
@@ -66,25 +61,29 @@ optionsBtn.forEach((optionBtn) =>
         optionBtn.classList.add("active");
 
         // Tcheck what is the button active :
-        switch (optionBtn.id) {
-            case "normal_pen":
-                [normal_pen, eraser, rainbow, lighten, shading] = [true, false, false, false, false];
-                break;
-            case "eraser":
-                [normal_pen, eraser, rainbow, lighten, shading] = [false, true, false, false, false];
-                break;
-            case "rainbow":
-                [normal_pen, eraser, rainbow, lighten, shading] = [false, false, true, false, false];
-                break;
-            case "lighten":
-                [normal_pen, eraser, rainbow, lighten, shading] = [false, false, false, true, false];
-                break;
-            case "shading":
-                [normal_pen, eraser, rainbow, lighten, shading] = [false, false, false, false, true];
-                break;
-        }
+        switchOptionBtn(optionBtn.id);
     })
 );
+
+function switchOptionBtn(optionBtn) {
+    switch (optionBtn) {
+        case "normal_pen":
+            [normal_pen, eraser, rainbow, lighten, shading] = [true, false, false, false, false];
+            break;
+        case "eraser":
+            [normal_pen, eraser, rainbow, lighten, shading] = [false, true, false, false, false];
+            break;
+        case "rainbow":
+            [normal_pen, eraser, rainbow, lighten, shading] = [false, false, true, false, false];
+            break;
+        case "lighten":
+            [normal_pen, eraser, rainbow, lighten, shading] = [false, false, false, true, false];
+            break;
+        case "shading":
+            [normal_pen, eraser, rainbow, lighten, shading] = [false, false, false, false, true];
+            break;
+    }
+}
 
 // Color Input + Color Picker button :
 inputColor.addEventListener("input", () => {
@@ -96,14 +95,14 @@ colorPicker.addEventListener("click", () => {
 
     gridContainer.addEventListener("click", (e) => {
         if (colorPicker.classList.contains("active")) {
-            inkValue = RGBToHEX(e.target.style.backgroundColor);
+            inkValue = `#${RGBToHEX(e.target.style.backgroundColor)}`;
             inputColor.value = inkValue;
             colorPicker.classList.remove("active");
         }
     });
 });
 
-// Color Modification RGB to HEX :
+// Transform RGB to HEX and RGB to HSL :
 function RGBToHEX(rgb) {
     // Choose correct separator
     let sep = rgb.indexOf(",") > -1 ? "," : " ";
@@ -122,20 +121,17 @@ function RGBToHEX(rgb) {
     if (r.length == 1) r = "0" + r;
     if (g.length == 1) g = "0" + g;
     if (b.length == 1) b = "0" + b;
-    return "#" + r + g + b;
+    return r + g + b;
 }
 
-function HEXToHSL(hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    r = parseInt(result[1], 16);
-    g = parseInt(result[2], 16);
-    b = parseInt(result[3], 16);
+function RGBToHSL(r, g, b) {
     (r /= 255), (g /= 255), (b /= 255);
     var max = Math.max(r, g, b),
         min = Math.min(r, g, b);
     var h,
         s,
         l = (max + min) / 2;
+
     if (max == min) {
         h = s = 0; // achromatic
     } else {
@@ -154,11 +150,8 @@ function HEXToHSL(hex) {
         }
         h /= 6;
     }
-    var HSL = new Object();
-    HSL["h"] = h;
-    HSL["s"] = s;
-    HSL["l"] = l;
-    return HSL;
+
+    return [h * 360, s * 100, l * 100];
 }
 
 // Grid Button :
@@ -177,12 +170,12 @@ gridContainer.addEventListener("mousedown", (e) => {
     movement = true;
 
     if (!colorPicker.classList.contains("active")) {
-        e.target.style.backgroundColor = drawing(inkValue);
+        e.target.style.backgroundColor = drawing(e.target, inkValue);
 
         // For continus mousedown :
         gridContainer.addEventListener("mouseover", (e) => {
             if (movement) {
-                e.target.style.backgroundColor = drawing(inkValue);
+                e.target.style.backgroundColor = drawing(e.target, inkValue);
             }
         });
     }
@@ -191,15 +184,17 @@ gridContainer.addEventListener("mousedown", (e) => {
 gridContainer.addEventListener("mouseup", () => (movement = false));
 
 // Drawing function :
-function drawing(inkValue) {
+function drawing(e, inkValue) {
+    let target = e;
+
     if (eraser) {
         inkValue = "#FFF";
     } else if (rainbow) {
         inkValue = randomColor();
     } else if (lighten) {
-        inkValue = lightenColor(this.target);
+        inkValue = LightAndShading(target.style.background, true);
     } else if (shading) {
-        inkValue = randomColor();
+        inkValue = LightAndShading(target.style.background, false);
     }
     return inkValue;
 }
@@ -210,10 +205,16 @@ function randomColor() {
     return `hsl(${Math.random() * 360}, 100%, 50%)`;
 }
 
-// Lighten color (Lighten) :
-function lightenColor(inkValue) {
-    console.log(inkValue);
-    let newInk = HEXToHSL(inkValue);
-    console.log(newInk);
-    return newInk;
+// Lighten & Shading color  :
+function LightenDarkenColor(col, amt) {
+    col = parseInt(col, 16);
+    return (((col & 0x0000ff) + amt) | ((((col >> 6) & 0x00ff) + amt) << 6) | (((col >> 16) + amt) << 16)).toString(16);
+}
+
+function LightAndShading(inkValue, lightOrDark) {
+    let rgbaArray = (inkValue.charAt(3) == "a" ? inkValue.slice(5, -1) : inkValue.slice(4, -1)).split(", ");
+    let [red, green, blue] = [rgbaArray[0], rgbaArray[1], rgbaArray[2]];
+    let hexColor = RGBToHSL(red, green, blue);
+
+    return lightOrDark ? `hsl(${hexColor[0]}, ${hexColor[1]}%, ${hexColor[2] + 2}%)` : `hsl(${hexColor[0]}, ${hexColor[1]}%, ${hexColor[2] - 2}%)`;
 }
