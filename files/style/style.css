@@ -321,10 +321,14 @@ article .controls .all_input button#clear:hover {
   -ms-grid-columns: (1fr)[4];
       grid-template-columns: repeat(4, 1fr);
   height: 100%;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .etch_grid_container .grid_container .grid_element {
-  background: #e0e6ff;
+  background: #fff;
   width: 100%;
   height: 100%;
   -webkit-transition: 0.2s;
