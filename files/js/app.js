@@ -3,11 +3,13 @@ const inputRange = document.querySelector("input[type='range']");
 const progressBar = document.querySelector(".progress_bar");
 let gridSize = document.getElementById("grid_size");
 
-inputRange.addEventListener("mousemove", function () {
-    let inputRangeValue = inputRange.value;
-    progressBar.style.width = `${(inputRangeValue / 50) * 100}%`;
-    gridSize.innerText = `${inputRangeValue} X ${inputRangeValue}`;
-});
+inputRange.addEventListener("mousemove", () => updateInformations(inputRange.value));
+inputRange.addEventListener("change", () => generateGrid(inputRange.value));
+
+function updateInformations(value) {
+    progressBar.style.width = `${(value / 50) * 100}%`;
+    gridSize.innerText = `${value} X ${value}`;
+}
 
 // Buttons :
 const optionsBtn = document.querySelectorAll(".toggle_options button");
@@ -32,9 +34,45 @@ optionsBtn.forEach((optionBtn) =>
     })
 );
 
+// Grid Button :
+const toggleGrid = document.getElementById("grid_toggle");
+
+toggleGrid.addEventListener("click", () => {
+    toggleGrid.classList.toggle("active");
+
+    let gridElementSelection = document.querySelectorAll("div.grid_element");
+    gridElementSelection.forEach((gridElement) => gridElement.classList.toggle("toggle_border"));
+});
+
 // Clear :
 const clearBtn = document.getElementById("clear");
 
 clearBtn.addEventListener("click", () => {
     document.querySelector(".toggle_options button.active").classList.remove("active");
 });
+
+// Grid :
+const gridContainer = document.querySelector(".grid_container");
+
+function generateGrid(value) {
+    // Style the grid :
+    gridContainer.innerHTML = "";
+    gridContainer.style.gridTemplateRows = `repeat(${value}, 1fr)`;
+    gridContainer.style.gridTemplateColumns = `repeat(${value}, 1fr)`;
+
+    // Create elements :
+    for (let i = 0; i < value; i++) {
+        for (let j = 0; j < value; j++) {
+            let element = document.createElement("div");
+            element.classList.add("grid_element");
+            if (toggleGrid.classList.contains("active")) {
+                element.classList.add("toggle_border");
+            }
+            gridContainer.appendChild(element);
+        }
+    }
+}
+
+// Call begin functions :
+generateGrid(inputRange.value);
+updateInformations(inputRange.value);
