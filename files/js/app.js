@@ -1,3 +1,6 @@
+// Variables :
+let gridElementSelection = document.querySelectorAll(".grid_element");
+
 // Slider :
 const inputRange = document.querySelector("input[type='range']");
 const progressBar = document.querySelector(".progress_bar");
@@ -21,34 +24,53 @@ optionsBtn.forEach((optionBtn) =>
         }
         optionBtn.classList.add("active");
 
-        // Tcheck what is the button clicked :
-        if (optionBtn.id == "eraser") {
-            console.log("Eraser");
-        } else if (optionBtn.id == "rainbow") {
-            console.log("rainbow");
-        } else if (optionBtn.id == "lighten") {
-            console.log("lighten");
-        } else if (optionBtn.id == "shading") {
-            console.log("shading");
+        // Tcheck what is the button active :
+        switch (optionBtn.id) {
+            case "eraser":
+                console.log("Eraser");
+                break;
+            case "rainbow":
+                console.log("rainbow");
+                break;
+            case "lighten":
+                console.log("lighten");
+                break;
+            case "shading":
+                console.log("shading");
+                break;
         }
     })
 );
+
+// Color Input + Color Picker button :
+const inputColor = document.getElementById("color");
+const colorPicker = document.getElementById("color_pick");
+
+let inkValue = "#6495ff";
+inputColor.value = inkValue;
+
+inputColor.addEventListener("input", () => {
+    inkValue = inputColor.value;
+});
+
+colorPicker.addEventListener("click", () => {
+    colorPicker.classList.toggle("active");
+
+    gridContainer.addEventListener("click", (e) => {
+        if (colorPicker.classList.contains("active")) {
+            inkValue = colorModification(e.target.style.backgroundColor);
+            inputColor.value = inkValue;
+            colorPicker.classList.remove("active");
+        }
+    });
+});
 
 // Grid Button :
 const toggleGrid = document.getElementById("grid_toggle");
 
 toggleGrid.addEventListener("click", () => {
     toggleGrid.classList.toggle("active");
-
-    let gridElementSelection = document.querySelectorAll("div.grid_element");
     gridElementSelection.forEach((gridElement) => gridElement.classList.toggle("toggle_border"));
-});
-
-// Clear :
-const clearBtn = document.getElementById("clear");
-
-clearBtn.addEventListener("click", () => {
-    document.querySelector(".toggle_options button.active").classList.remove("active");
 });
 
 // Grid :
@@ -61,18 +83,49 @@ function generateGrid(value) {
     gridContainer.style.gridTemplateColumns = `repeat(${value}, 1fr)`;
 
     // Create elements :
-    for (let i = 0; i < value; i++) {
-        for (let j = 0; j < value; j++) {
-            let element = document.createElement("div");
-            element.classList.add("grid_element");
-            if (toggleGrid.classList.contains("active")) {
-                element.classList.add("toggle_border");
-            }
-            gridContainer.appendChild(element);
+    for (let i = 0; i < value ** 2; i++) {
+        const element = document.createElement("div");
+        element.classList.add("grid_element");
+        element.style.background = "#e0e6ff";
+        if (toggleGrid.classList.contains("active")) {
+            element.classList.add("toggle_border");
         }
+        gridContainer.appendChild(element);
     }
+
+    // Assignment of all element :
+    gridElementSelection = document.querySelectorAll(".grid_element");
 }
 
 // Call begin functions :
 generateGrid(inputRange.value);
 updateInformations(inputRange.value);
+
+// Clear Button :
+const clearBtn = document.getElementById("clear");
+
+clearBtn.addEventListener("click", () => {
+    gridElementSelection.forEach((gridElement) => (gridElement.style.backgroundColor = ""));
+});
+
+// Color Modification RGB to HEX :
+function colorModification(rgb) {
+    // Choose correct separator
+    let sep = rgb.indexOf(",") > -1 ? "," : " ";
+    // Turn "rgb(r,g,b)" into [r,g,b]
+    rgb = rgb.substr(4).split(")")[0].split(sep);
+
+    let r = (+rgb[0]).toString(16),
+        g = (+rgb[1]).toString(16),
+        b = (+rgb[2]).toString(16);
+
+    if (r.length == 1) r = "0" + r;
+    if (g.length == 1) g = "0" + g;
+    if (b.length == 1) b = "0" + b;
+    b = (+rgb[2]).toString(16);
+
+    if (r.length == 1) r = "0" + r;
+    if (g.length == 1) g = "0" + g;
+    if (b.length == 1) b = "0" + b;
+    return "#" + r + g + b;
+}

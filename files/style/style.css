@@ -303,8 +303,8 @@ article .controls .all_input button#clear:hover {
 
 .etch_grid_container h2 {
   position: absolute;
-  -webkit-transform: translate(-20%, -115%);
-          transform: translate(-20%, -115%);
+  -webkit-transform: translate(-23%, -115%);
+          transform: translate(-23%, -115%);
   right: 0;
   background: #e0e6ff;
   padding: 5px 10px;
@@ -327,6 +327,8 @@ article .controls .all_input button#clear:hover {
   background: #e0e6ff;
   width: 100%;
   height: 100%;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .etch_grid_container .grid_container .grid_element.toggle_border {
