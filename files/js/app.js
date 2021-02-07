@@ -1,4 +1,4 @@
-// letiables :
+// Variables :
 const optionsBtn = document.querySelectorAll(".toggle_options button");
 const inputColor = document.getElementById("color");
 const colorPicker = document.getElementById("color_pick");
