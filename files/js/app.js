@@ -86,9 +86,7 @@ function switchOptionBtn(optionBtn) {
 }
 
 // Color Input + Color Picker button :
-inputColor.addEventListener("input", () => {
-    inkValue = inputColor.value;
-});
+inputColor.addEventListener("input", () => (inkValue = inputColor.value));
 
 colorPicker.addEventListener("click", () => {
     colorPicker.classList.toggle("active");
@@ -126,16 +124,16 @@ function RGBToHEX(rgb) {
 
 function RGBToHSL(r, g, b) {
     (r /= 255), (g /= 255), (b /= 255);
-    var max = Math.max(r, g, b),
+    let max = Math.max(r, g, b),
         min = Math.min(r, g, b);
-    var h,
+    let h,
         s,
         l = (max + min) / 2;
 
     if (max == min) {
-        h = s = 0; // achromatic
+        h = s = 0;
     } else {
-        var d = max - min;
+        let d = max - min;
         s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
         switch (max) {
             case r:
@@ -185,16 +183,14 @@ gridContainer.addEventListener("mouseup", () => (movement = false));
 
 // Drawing function :
 function drawing(e, inkValue) {
-    let target = e;
-
     if (eraser) {
         inkValue = "#FFF";
     } else if (rainbow) {
         inkValue = randomColor();
     } else if (lighten) {
-        inkValue = LightAndShading(target.style.background, true);
+        inkValue = LightAndShading(e.style.background, true);
     } else if (shading) {
-        inkValue = LightAndShading(target.style.background, false);
+        inkValue = LightAndShading(e.style.background, false);
     }
     return inkValue;
 }
